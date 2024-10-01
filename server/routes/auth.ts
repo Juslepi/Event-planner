@@ -8,7 +8,7 @@ dotenv.config();
 const authRouter = express.Router();
 const secretKey = process.env.SECRET;
 
-const getUserCollection = () => {
+export const getUserCollection = () => {
   const db = getDb();
   const collection = db.collection("users");
   return collection;
