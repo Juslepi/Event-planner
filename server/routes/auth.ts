@@ -21,19 +21,28 @@ if (!secretKey) {
 // Register
 authRouter.post("/", async (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || username.length < 4) {
+    res.status(400).send("Username must be at least 4 characters");
+  }
+  else if (!password || password.length < 6) {
+    res.status(400).send("Password must be at least 6 characters");
+  }
   const encryptedPassword = await bcrypt.hash(password, 10);
 
-  const collection = getUserCollection();
-
+  
   // Check for existing user
+  const collection = getUserCollection();
   let user;
   try {
     user = await collection.findOne({ username });
   } catch (error) {
+    res.status(500).send("Server error");
     console.error(error);
   }
+
   if (user) {
-    return res.send("Username already exists");
+    return res.status(409).send("Username already exists");
   }
 
   try {
