@@ -57,6 +57,9 @@ authRouter.post("/", async (req, res) => {
 // Login
 authRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !passowrd ) {
+    res.status(400).send("Invalid credentials");
+  }
   const collection = getUserCollection();
 
   const user = await collection.findOne({ username: username });
